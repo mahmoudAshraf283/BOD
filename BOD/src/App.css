@@ -1,42 +1,273 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* Custom styles for the app */
+.main-content {
+  padding: 1rem;
+  width: calc(100% - 280px);
+  min-height: 100vh;
+  margin-left: 280px;
+  transition: all 0.3s ease;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Sidebar responsive styles */
+.sidebar-desktop {
+  display: block;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.sidebar-mobile {
+  display: none;
+}
+
+/* Field styles for forms */
+.field {
+  margin-bottom: 1rem;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.field-checkbox {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+    padding: 0.5rem;
+    padding-top: 5rem; /* Add top padding for header */
   }
-  to {
-    transform: rotate(360deg);
+  
+  .sidebar-desktop {
+    display: none;
+  }
+  
+  .sidebar-mobile {
+    display: block;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+@media (max-width: 768px) {
+  .main-content {
+    padding: 0.25rem;
+    padding-top: 5rem; /* Maintain top padding for header */
+  }
+  
+  /* Make tables scroll horizontally on mobile */
+  .p-datatable-wrapper {
+    overflow-x: auto;
+  }
+  
+  /* Adjust card padding on mobile */
+  .p-card .p-card-body {
+    padding: 0.75rem;
+  }
+  
+  /* Make dialog responsive */
+  .p-dialog {
+    width: 95vw !important;
+    margin: 0 auto;
+  }
+  
+  /* Responsive grid adjustments */
+  .responsive-grid .p-col-12 {
+    padding: 0.25rem;
   }
 }
 
-.card {
-  padding: 2em;
+@media (max-width: 576px) {
+  .main-content {
+    padding: 0.125rem;
+    padding-top: 5rem; /* Maintain top padding for header */
+  }
+  
+  /* Hide less important columns on very small screens */
+  .p-datatable .hide-on-mobile {
+    display: none;
+  }
+  
+  /* Make buttons smaller on mobile */
+  .p-button {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+  }
+  
+  /* Adjust stats cards on mobile */
+  .stats-card {
+    margin-bottom: 0.5rem;
+  }
 }
 
-.read-the-docs {
-  color: #888;
+/* Card enhancements */
+.p-card {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+/* Button hover effects */
+.p-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* DataTable responsive */
+.p-datatable-responsive-demo .p-datatable-tbody > tr > td .p-column-title {
+  display: none;
+}
+
+/* Mobile sidebar overlay */
+.mobile-sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: none;
+}
+
+.mobile-sidebar-overlay.active {
+  display: block;
+}
+
+/* Mobile menu button */
+.mobile-menu-button {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1001;
+  display: none;
+}
+
+/* App Header */
+.app-header {
+  height: 4rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Burger Menu Button */
+.burger-menu-button {
+  width: 3rem !important;
+  height: 3rem !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Burger Icon */
+.burger-icon {
+  width: 1.5rem;
+  height: 1.2rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.burger-line {
+  width: 100%;
+  height: 2px;
+  background-color: #6366f1;
+  border-radius: 1px;
+  transition: all 0.3s ease;
+}
+
+.burger-menu-button:hover .burger-line {
+  background-color: #4f46e5;
+}
+
+@media (max-width: 1024px) {
+  .mobile-menu-button {
+    display: block;
+  }
+}
+
+/* Fix for missing close icons */
+.p-toast .p-toast-message .p-toast-icon-close {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.p-toast .p-toast-message .p-toast-icon-close:before {
+  content: "\e90b" !important;
+  font-family: 'primeicons' !important;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  font-size: 0.875rem;
+}
+
+.p-sidebar .p-sidebar-close {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+}
+
+.p-sidebar .p-sidebar-close:before {
+  content: "\e90b" !important;
+  font-family: 'primeicons' !important;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  font-size: 1rem;
+}
+
+/* Alternative approach - use pi-times class */
+.p-toast .p-toast-icon-close .pi-times:before,
+.p-sidebar .p-sidebar-close .pi-times:before {
+  content: "\e90b" !important;
+}
+
+/* Ensure all close buttons have proper styling */
+.p-toast-icon-close,
+.p-sidebar-close {
+  color: #6b7280 !important;
+  transition: color 0.15s ease-in-out;
+}
+
+.p-toast-icon-close:hover,
+.p-sidebar-close:hover {
+  color: #374151 !important;
+}
+
+/* Force button icons to be black in forms */
+.p-dialog .p-button .pi {
+  color: #000000 !important;
+}
+
+.p-dialog .p-button {
+  color: #000000 !important;
+}
+
+.p-dialog .p-button .pi:before {
+  color: #000000 !important;
+}
+
+/* Specific targeting for Cancel button icons */
+.p-dialog .p-button-text .pi-times,
+.p-dialog .p-button-outlined .pi-times {
+  color: #000000 !important;
+}
+
+.p-dialog .p-button-text .pi-times:before,
+.p-dialog .p-button-outlined .pi-times:before {
+  color: #000000 !important;
 }
