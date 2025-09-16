@@ -1,9 +1,16 @@
 import React from 'react';
+import { useAuth } from '../contexts/AuthContext.jsx';
+import { useNotification } from '../contexts/NotificationContext.jsx';
 import { Avatar } from 'primereact/avatar';
+import { Badge } from 'primereact/badge';
+import { Button } from 'primereact/button';
 import { Ripple } from 'primereact/ripple';
 import { Sidebar } from 'primereact/sidebar';
 
 const SidebarComponent = ({ activeItem, onItemClick, mobileMenuVisible, onMobileMenuHide }) => {
+    const { user, logout } = useAuth();
+    const { showSuccess } = useNotification();
+
     const sidebarItems = [
         {
             id: 'dashboard',
@@ -37,6 +44,25 @@ const SidebarComponent = ({ activeItem, onItemClick, mobileMenuVisible, onMobile
         onMobileMenuHide();
     };
 
+    const handleLogout = () => {
+        logout();
+        showSuccess('Goodbye!', 'Successfully logged out from BOD Dashboard');
+    };
+
+    const getUserInitials = () => {
+        if (!user?.name) return user?.username?.charAt(0).toUpperCase() || 'U';
+        const names = user.name.split(' ');
+        return names.length > 1 
+            ? `${names[0].charAt(0)}${names[1].charAt(0)}`.toUpperCase()
+            : names[0].charAt(0).toUpperCase();
+    };
+
+    const getUserRoleBadge = () => {
+        if (user?.role === 'admin') return 'danger';
+        if (user?.role === 'user') return 'success';
+        return 'info';
+    };
+
     const sidebarContent = (
         <div className="flex flex-column h-full">
             <div className="flex align-items-center justify-content-center px-4 py-4 flex-shrink-0 border-bottom-1 surface-border">
@@ -64,18 +90,35 @@ const SidebarComponent = ({ activeItem, onItemClick, mobileMenuVisible, onMobile
             </div>
             
             <div className="mt-auto border-top-1 surface-border">
-                <a className="p-ripple flex align-items-center cursor-pointer p-3 gap-2 text-700 hover:surface-100 transition-duration-150 transition-colors">
-                    <Avatar 
-                        image="https://primefaces.org/cdn/primereact/images/avatar/amyelsner.png" 
-                        shape="circle" 
-                        size="normal"
-                    />
-                    <div className="flex flex-column">
-                        <span className="font-bold">Admin User</span>
-                        <span className="text-sm text-500">Administrator</span>
+                <div className="p-3">
+                    <div className="flex align-items-center gap-3 mb-3">
+                        <Avatar 
+                            label={getUserInitials()}
+                            className="bg-primary text-white"
+                            shape="circle" 
+                            size="normal"
+                        />
+                        <div className="flex flex-column flex-1">
+                            <div className="flex align-items-center gap-2">
+                                <span className="font-bold text-900">{user?.name || user?.username}</span>
+                                <Badge 
+                                    value={user?.role} 
+                                    severity={getUserRoleBadge()} 
+                                    size="small"
+                                />
+                            </div>
+                            <span className="text-sm text-600">{user?.email || `${user?.username}@example.com`}</span>
+                        </div>
                     </div>
-                    <Ripple />
-                </a>
+                    
+                    <Button
+                        label="Logout"
+                        icon="pi pi-sign-out"
+                        className="w-full p-button-outlined p-button-sm"
+                        onClick={handleLogout}
+                        style={{ color: '#000000' }}
+                    />
+                </div>
             </div>
         </div>
     );

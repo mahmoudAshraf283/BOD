@@ -1,4 +1,5 @@
 import React from 'react'
+import { AuthProvider } from './contexts/AuthContext.jsx'
 import { AppProvider } from './contexts/AppContext.jsx'
 import { NotificationProvider } from './contexts/NotificationContext.jsx'
 import AppContent from './components/AppContent'
@@ -10,11 +11,13 @@ import 'primeflex/primeflex.css'
 
 function App() {
   return (
-    <AppProvider>
-      <NotificationProvider>
-        <AppContent />
-      </NotificationProvider>
-    </AppProvider>
+    <AuthProvider>
+      <AppProvider>
+        <NotificationProvider>
+          <AppContent />
+        </NotificationProvider>
+      </AppProvider>
+    </AuthProvider>
   )
 }
 
