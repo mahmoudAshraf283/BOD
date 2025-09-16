@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNotification } from '../contexts/NotificationContext.jsx';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
@@ -10,7 +11,8 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { apiService } from '../services/apiService';
 import { useApiCall } from '../hooks/useApiCall';
 
-const Albums = ({ showNotification }) => {
+const Albums = () => {
+    const { showSuccess, showError } = useNotification();
     const [albums, setAlbums] = useState([]);
     const [users, setUsers] = useState([]);
     const [globalFilter, setGlobalFilter] = useState('');
@@ -37,10 +39,10 @@ const Albums = ({ showNotification }) => {
             
             setAlbums(albumsData);
             setUsers(usersData);
-            showNotification('success', 'Success', 'Albums loaded successfully');
+            showSuccess('Success', 'Albums loaded successfully');
         } catch (error) {
             console.error('Error fetching albums:', error);
-            showNotification('error', 'Error', 'Failed to load albums');
+            showError('Error', 'Failed to load albums');
         }
     };
 
@@ -69,14 +71,14 @@ const Albums = ({ showNotification }) => {
                 album.id === albumForm.id ? albumForm : album
             );
             setAlbums(updatedAlbums);
-            showNotification('success', 'Success', 'Album updated successfully');
+            showSuccess('Success', 'Album updated successfully');
         } else {
             const newAlbum = {
                 ...albumForm,
                 id: albums.length + 1
             };
             setAlbums([...albums, newAlbum]);
-            showNotification('success', 'Success', 'Album created successfully');
+            showSuccess('Success', 'Album created successfully');
         }
         setAlbumDialog(false);
     };
@@ -84,7 +86,7 @@ const Albums = ({ showNotification }) => {
     const deleteAlbum = (album) => {
         const updatedAlbums = albums.filter(a => a.id !== album.id);
         setAlbums(updatedAlbums);
-        showNotification('success', 'Success', 'Album deleted successfully');
+        showSuccess('Success', 'Album deleted successfully');
     };
 
     const getUserName = (userId) => {

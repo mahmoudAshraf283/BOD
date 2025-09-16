@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNotification } from '../contexts/NotificationContext.jsx';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
@@ -12,7 +13,8 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { apiService } from '../services/apiService';
 import { useApiCall } from '../hooks/useApiCall';
 
-const Todos = ({ showNotification }) => {
+const Todos = () => {
+    const { showSuccess, showError, showInfo } = useNotification();
     const [todos, setTodos] = useState([]);
     const [users, setUsers] = useState([]);
     const [globalFilter, setGlobalFilter] = useState('');
@@ -40,10 +42,10 @@ const Todos = ({ showNotification }) => {
             
             setTodos(todosData);
             setUsers(usersData);
-            showNotification('success', 'Success', 'Todos loaded successfully');
+            showSuccess('Success', 'Todos loaded successfully');
         } catch (error) {
             console.error('Error fetching todos:', error);
-            showNotification('error', 'Error', 'Failed to load todos');
+            showError('Error', 'Failed to load todos');
         }
     };
 
@@ -73,14 +75,14 @@ const Todos = ({ showNotification }) => {
                 todo.id === todoForm.id ? todoForm : todo
             );
             setTodos(updatedTodos);
-            showNotification('success', 'Success', 'Todo updated successfully');
+            showSuccess('Success', 'Todo updated successfully');
         } else {
             const newTodo = {
                 ...todoForm,
                 id: todos.length + 1
             };
             setTodos([...todos, newTodo]);
-            showNotification('success', 'Success', 'Todo created successfully');
+            showSuccess('Success', 'Todo created successfully');
         }
         setTodoDialog(false);
     };
@@ -88,7 +90,7 @@ const Todos = ({ showNotification }) => {
     const deleteTodo = (todo) => {
         const updatedTodos = todos.filter(t => t.id !== todo.id);
         setTodos(updatedTodos);
-        showNotification('success', 'Success', 'Todo deleted successfully');
+        showSuccess('Success', 'Todo deleted successfully');
     };
 
     const toggleComplete = (todo) => {
@@ -96,7 +98,7 @@ const Todos = ({ showNotification }) => {
             t.id === todo.id ? { ...t, completed: !t.completed } : t
         );
         setTodos(updatedTodos);
-        showNotification('info', 'Info', `Todo marked as ${!todo.completed ? 'completed' : 'incomplete'}`);
+        showInfo('Info', `Todo marked as ${!todo.completed ? 'completed' : 'incomplete'}`);
     };
 
     const getUserName = (userId) => {

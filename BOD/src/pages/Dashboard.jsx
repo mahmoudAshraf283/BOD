@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useNotification } from '../contexts/NotificationContext.jsx';
 import { Card } from 'primereact/card';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { apiService } from '../services/apiService';
 import { useApiCall } from '../hooks/useApiCall';
 
-const Dashboard = ({ showNotification }) => {
+const Dashboard = () => {
+    const { showSuccess, showError } = useNotification();
     const [stats, setStats] = useState({
         users: 0,
         posts: 0,
@@ -38,10 +40,10 @@ const Dashboard = ({ showNotification }) => {
                 completedTodos
             });
             
-            showNotification('success', 'Success', 'Dashboard data loaded successfully');
+            showSuccess('Success', 'Dashboard data loaded successfully');
         } catch (error) {
             console.error('Error fetching dashboard data:', error);
-            showNotification('error', 'Error', 'Failed to load dashboard data');
+            showError('Error', 'Failed to load dashboard data');
         }
     };
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNotification } from '../contexts/NotificationContext.jsx';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
@@ -11,7 +12,8 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { apiService } from '../services/apiService';
 import { useApiCall } from '../hooks/useApiCall';
 
-const Posts = ({ showNotification }) => {
+const Posts = () => {
+    const { showSuccess, showError } = useNotification();
     const [posts, setPosts] = useState([]);
     const [users, setUsers] = useState([]);
     const [globalFilter, setGlobalFilter] = useState('');
@@ -39,10 +41,10 @@ const Posts = ({ showNotification }) => {
             
             setPosts(postsData);
             setUsers(usersData);
-            showNotification('success', 'Success', 'Posts loaded successfully');
+            showSuccess('Success', 'Posts loaded successfully');
         } catch (error) {
             console.error('Error fetching posts:', error);
-            showNotification('error', 'Error', 'Failed to load posts');
+            showError('Error', 'Failed to load posts');
         }
     };
 
@@ -72,14 +74,14 @@ const Posts = ({ showNotification }) => {
                 post.id === postForm.id ? postForm : post
             );
             setPosts(updatedPosts);
-            showNotification('success', 'Success', 'Post updated successfully');
+            showSuccess('Success', 'Post updated successfully');
         } else {
             const newPost = {
                 ...postForm,
                 id: posts.length + 1
             };
             setPosts([...posts, newPost]);
-            showNotification('success', 'Success', 'Post created successfully');
+            showSuccess('Success', 'Post created successfully');
         }
         setPostDialog(false);
     };
@@ -87,7 +89,7 @@ const Posts = ({ showNotification }) => {
     const deletePost = (post) => {
         const updatedPosts = posts.filter(p => p.id !== post.id);
         setPosts(updatedPosts);
-        showNotification('success', 'Success', 'Post deleted successfully');
+        showSuccess('Success', 'Post deleted successfully');
     };
 
     const getUserName = (userId) => {

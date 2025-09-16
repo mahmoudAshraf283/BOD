@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNotification } from '../contexts/NotificationContext.jsx';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { InputText } from 'primereact/inputtext';
@@ -9,7 +10,8 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { apiService } from '../services/apiService';
 import { useApiCall } from '../hooks/useApiCall';
 
-const Users = ({ showNotification }) => {
+const Users = () => {
+    const { showSuccess, showError } = useNotification();
     const [users, setUsers] = useState([]);
     const [globalFilter, setGlobalFilter] = useState('');
     const [selectedUser, setSelectedUser] = useState(null);
@@ -35,10 +37,10 @@ const Users = ({ showNotification }) => {
                 () => apiService.getUsers()
             );
             setUsers(data);
-            showNotification('success', 'Success', 'Users loaded successfully');
+            showSuccess('Success', 'Users loaded successfully');
         } catch (error) {
             console.error('Error fetching users:', error);
-            showNotification('error', 'Error', 'Failed to load users');
+            showError('Error', 'Failed to load users');
         }
     };
 
@@ -70,14 +72,14 @@ const Users = ({ showNotification }) => {
                 user.id === userForm.id ? userForm : user
             );
             setUsers(updatedUsers);
-            showNotification('success', 'Success', 'User updated successfully');
+            showSuccess('Success', 'User updated successfully');
         } else {
             const newUser = {
                 ...userForm,
                 id: users.length + 1
             };
             setUsers([...users, newUser]);
-            showNotification('success', 'Success', 'User created successfully');
+            showSuccess('Success', 'User created successfully');
         }
         setUserDialog(false);
     };
@@ -85,7 +87,7 @@ const Users = ({ showNotification }) => {
     const deleteUser = (user) => {
         const updatedUsers = users.filter(u => u.id !== user.id);
         setUsers(updatedUsers);
-        showNotification('success', 'Success', 'User deleted successfully');
+        showSuccess('Success', 'User deleted successfully');
     };
 
     const actionBodyTemplate = (rowData) => {
